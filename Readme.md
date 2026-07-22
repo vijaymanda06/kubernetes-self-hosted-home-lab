@@ -368,37 +368,9 @@ Things that weren't straightforward and required debugging:
 
 - [ ] GitOps with ArgoCD — manage all workloads declaratively from this repository
 - [ ] OpenTelemetry — distributed tracing alongside metrics and logs
-- [ ] HashiCorp Vault — secrets management
-- [ ] Kyverno — policy enforcement and admission control
-- [ ] Harbor — private container registry
-- [ ] Istio or Cilium — service mesh and advanced networking
-- [ ] KEDA — event-driven autoscaling
-- [ ] Crossplane — infrastructure as code from within Kubernetes
 - [ ] Expand MCP integration — more AI-assisted operational capabilities
 
 ---
-
-## Repository Structure
-
-```
-.
-├── README.md
-└── screenshots/
-    ├── architecture.jpg
-    ├── longhorn-dashboard.png
-    ├── trivy-vulnerabilities.png
-    ├── tailscale-admin.png
-    ├── grafana-cluster-dashboard.png
-    ├── grafana-node-exporter.png
-    ├── grafana-loki-logs.png
-    ├── prometheus-targets.png
-    ├── prometheus-alerts-firing.png
-    ├── alertmanager-active.png
-    └── slack-alert.png
-```
-
-> This repository currently contains documentation only. Kubernetes manifests and Helm values are managed separately. As GitOps with ArgoCD is adopted, configuration files will be added here.
-
 ---
 
 ## License
