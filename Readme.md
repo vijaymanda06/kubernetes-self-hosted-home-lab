@@ -63,8 +63,6 @@ Total Resources
 | **Orchestration** | Kubernetes (kubeadm) | Cluster management |
 | **Container Runtime** | containerd | Container execution |
 | **Networking (CNI)** | Calico | Pod networking, network policy |
-| **Ingress** | NGINX Ingress Controller | HTTP/HTTPS routing |
-| **Load Balancer** | MetalLB (L2) | Bare-metal load balancer |
 | **Storage** | Longhorn | Distributed block storage |
 | **Monitoring** | Prometheus + kube-state-metrics + node-exporter | Metrics collection |
 | **Visualization** | Grafana | Dashboards and visualization |
