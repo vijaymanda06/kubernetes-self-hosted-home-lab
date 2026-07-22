@@ -219,8 +219,7 @@ The cluster is organized into purpose-specific namespaces:
 
 ## Cluster State
 
-<details>
-<summary>Nodes</summary>
+### Nodes
 
 ```
 $ kubectl get nodes
@@ -230,10 +229,7 @@ k8s-worker-2   Ready    <none>          6d21h   v1.30.14
 vijay-ubuntu   Ready    control-plane   6d21h   v1.31.14
 ```
 
-</details>
-
-<details>
-<summary>All Pods (Running on Worker Nodes)</summary>
+### All Pods (Running on Worker Nodes)
 
 ```
 $ kubectl get pods -A
@@ -315,14 +311,12 @@ monitoring        prometheus-monitoring-kube-prometheus-prometheus-0       2/2  
 tailscale         operator-5f8bdd949f-nxcc8                                1/1     Running       1 (88m ago)    2d17h
 tailscale         ts-alertmanager-ui-k6scm-0                               1/1     Running       1 (88m ago)    2d8h
 tailscale         ts-argocd-server-wfgxp-0                                 1/1     Running       1 (88m ago)    2d17h
-tailscale         ts-longhorn-frontend-2lsm8-0                             1/1     Running       1 (88m ago)    2d17h
+tailscale         ts-longhorn-frontend-2lsm8-0                            1/1     Running       1 (88m ago)    2d17h
 tailscale         ts-monitoring-grafana-7lwxg-0                            1/1     Running       1 (88m ago)    2d17h
 tailscale         ts-open-webui-ts-b6jtj-0                                 1/1     Running       1 (88m ago)    2d8h
 tailscale         ts-prometheus-ui-6t5jm-0                                 1/1     Running       1 (88m ago)    2d8h
 trivy-system      trivy-operator-64d66c4f5d-9gz9j                          1/1     Running       1 (88m ago)    2d21h
 ```
-
-</details>
 
 ---
 
