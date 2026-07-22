@@ -1,6 +1,6 @@
 # Kubernetes Self-Hosted Home Lab
 
-A self-hosted Kubernetes platform running across an on-prem Ubuntu laptop and Oracle Cloud ARM instances. Built to learn production-grade platform engineering — observability, security, persistent storage, and runtime security.
+A self-hosted Kubernetes platform running across an on-prem Ubuntu laptop and Oracle Cloud ARM instances. Built to learn production-grade platform engineering — observability, security, persistent storage, and more.
 
 ![Architecture](screenshots/architecture.jpg)
 
@@ -8,7 +8,7 @@ A self-hosted Kubernetes platform running across an on-prem Ubuntu laptop and Or
 
 ## Why I Built This
 
-I wanted a place to experiment with Kubernetes beyond tutorials and sample applications. Instead of just deploying workloads, I focused on building the platform around them — monitoring, logging, security scanning, and resilience across heterogeneous infrastructure (ARM + x86-64).
+I wanted a place to experiment with Kubernetes beyond tutorials and sample applications. Instead of just deploying workloads, I focused on building the platform around them — monitoring, logging, security, and operational visibility.
 
 ---
 
@@ -140,7 +140,7 @@ metrics    ─────┘         └──→ Grafana
 
 ### Alerting Validation
 
-To verify the alerting pipeline end-to-end, I intentionally scaled a deployment's replicas to zero. This triggered `KubeDeploymentReplicasMismatch` in Prometheus, which Alertmanager picked up and forwarded to Slack with severity metadata.
+To verify the alerting pipeline end-to-end, I intentionally scaled a deployment's replicas to zero. This triggered `KubeDeploymentReplicasMismatch` in Prometheus, which Alertmanager picked up and forwarded to Slack.
 
 <!-- TODO: Add screenshots for Grafana dashboards, Prometheus, Alertmanager, and Slack alerts -->
 
@@ -190,9 +190,9 @@ The **Trivy Operator** continuously scans workloads and images, producing `Vulne
 Vulnerability Flow
 ──────────────────
 Workloads ──→ Trivy Operator ──→ VulnerabilityReports (CRD)
-                                      │
-                                      ├──→ Prometheus ──→ Grafana
-                                      └──→ kube-state-metrics
+                                     │
+                                     ├──→ Prometheus ──→ Grafana
+                                     └──→ kube-state-metrics
 ```
 
 ---
@@ -233,91 +233,93 @@ vijay-ubuntu   Ready    control-plane   6d21h   v1.31.14
 </details>
 
 <details>
-<summary>All Pods (83 pods, all Running)</summary>
+<summary>All Pods (Running on Worker Nodes)</summary>
 
 ```
 $ kubectl get pods -A
-NAMESPACE         NAME                                                     READY   STATUS    RESTARTS   AGE
-ai-platform       open-webui-0                                             1/1     Running   0          5h43m
-ai-platform       open-webui-redis-695dcb9d5f-9wj9k                        1/1     Running   0          6h4m
-argocd            argocd-application-controller-0                          1/1     Running   0          19h
-argocd            argocd-applicationset-controller-8998bf8d-92lq4          1/1     Running   0          19h
-argocd            argocd-dex-server-755d44cc-8hhzt                         1/1     Running   0          19h
-argocd            argocd-notifications-controller-c668fd67c-hrmhn          1/1     Running   0          19h
-argocd            argocd-redis-78d7dccb7f-wkz55                            1/1     Running   0          19h
-argocd            argocd-repo-server-585ccc7645-ppgfk                      1/1     Running   0          19h
-argocd            argocd-server-57455cb49d-8zk72                           1/1     Running   0          19h
-falco             falco-d5q9g                                              2/2     Running   0          18h
-falco             falco-falcosidekick-d4764b69b-nqrcq                      1/1     Running   0          18h
-falco             falco-falcosidekick-d4764b69b-rxffh                      1/1     Running   0          4h9m
-falco             falco-plxvm                                              2/2     Running   0          18h
-falco             falco-wnsg4                                              2/2     Running   0          18h
-ingress-nginx     ingress-nginx-controller-547bc45676-w5wp4                1/1     Running   4          22h
-kube-system       calico-kube-controllers-68865dfcb6-48dqc                 1/1     Running   5          6d21h
-kube-system       calico-node-b7gks                                        1/1     Running   0          2d17h
-kube-system       calico-node-rvrsm                                        1/1     Running   0          2d17h
-kube-system       calico-node-xrnbh                                        1/1     Running   0          2d17h
-kube-system       coredns-7c65d6cfc9-fn7vc                                 1/1     Running   1          6d21h
-kube-system       coredns-7c65d6cfc9-mmxcx                                 1/1     Running   1          6d21h
-kube-system       etcd-vijay-ubuntu                                        1/1     Running   0          5h21m
-kube-system       kube-apiserver-vijay-ubuntu                              1/1     Running   4          6d21h
-kube-system       kube-controller-manager-vijay-ubuntu                     1/1     Running   2          5h33m
-kube-system       kube-proxy-2lwkl                                         1/1     Running   0          6d21h
-kube-system       kube-proxy-ld2rj                                         1/1     Running   0          6d21h
-kube-system       kube-proxy-w2vjb                                         1/1     Running   1          6d21h
-kube-system       kube-scheduler-vijay-ubuntu                              1/1     Running   2          5h33m
-kube-system       metrics-server-7584b7988b-z2tvs                          1/1     Running   0          18h
-longhorn-system   csi-attacher-dcf5f4778-2r757                             1/1     Running   0          4h5m
-longhorn-system   csi-attacher-dcf5f4778-7wmnq                             1/1     Running   4          22h
-longhorn-system   csi-attacher-dcf5f4778-jh7z2                             1/1     Running   0          4h9m
-longhorn-system   csi-provisioner-85886d6599-flzbl                         1/1     Running   3          22h
-longhorn-system   csi-provisioner-85886d6599-p9gw2                         1/1     Running   0          4h5m
-longhorn-system   csi-provisioner-85886d6599-wgms4                         1/1     Running   0          4h9m
-longhorn-system   csi-resizer-64fd6c6db9-8m5jp                             1/1     Running   0          4h9m
-longhorn-system   csi-resizer-64fd6c6db9-hx2m8                             1/1     Running   3          22h
-longhorn-system   csi-resizer-64fd6c6db9-spghg                             1/1     Running   0          4h5m
-longhorn-system   csi-snapshotter-69b79bc644-cr8qp                         1/1     Running   0          4h9m
-longhorn-system   csi-snapshotter-69b79bc644-q4psv                         1/1     Running   0          4h5m
-longhorn-system   csi-snapshotter-69b79bc644-xcf8j                         1/1     Running   3          22h
-longhorn-system   engine-image-ei-a4d05f02-5rs2f                           1/1     Running   1          22h
-longhorn-system   engine-image-ei-a4d05f02-m67p4                           1/1     Running   0          22h
-longhorn-system   engine-image-ei-a4d05f02-xmnz9                           1/1     Running   0          22h
-longhorn-system   instance-manager-d760cc5a7b02f2da1090d4f319bd1343        1/1     Running   0          4h
-longhorn-system   instance-manager-fb684a3edd7d8b12fce28628a8c35b26        1/1     Running   0          22h
-longhorn-system   instance-manager-fd54f58cd08d40ea72b785096cff0498        1/1     Running   0          4h
-longhorn-system   longhorn-csi-plugin-4rch7                                3/3     Running   0          22h
-longhorn-system   longhorn-csi-plugin-kxqrp                                3/3     Running   0          22h
-longhorn-system   longhorn-csi-plugin-njzzm                                3/3     Running   0          22h
-longhorn-system   longhorn-driver-deployer-7b5884966f-jf85v                1/1     Running   2          22h
-longhorn-system   longhorn-manager-b88pb                                   2/2     Running   1          22h
-longhorn-system   longhorn-manager-nt886                                   2/2     Running   0          22h
-longhorn-system   longhorn-manager-rv7gj                                   2/2     Running   1          22h
-longhorn-system   longhorn-ui-56fcbf68c9-28d7m                             1/1     Running   0          4h5m
-longhorn-system   longhorn-ui-56fcbf68c9-fg42v                             1/1     Running   0          22h
-mcp               kubernetes-mcp-server-757576df77-npnzs                   1/1     Running   0          4h
-monitoring        alertmanager-monitoring-kube-prometheus-alertmanager-0   2/2     Running   0          168m
-monitoring        alloy-2dk9x                                              2/2     Running   0          19h
-monitoring        alloy-2llk7                                              2/2     Running   0          19h
-monitoring        alloy-rwrl8                                              2/2     Running   0          19h
-monitoring        loki-0                                                   2/2     Running   0          21h
-monitoring        loki-canary-6s7h2                                        1/1     Running   0          21h
-monitoring        loki-canary-bb9rq                                        1/1     Running   0          21h
-monitoring        loki-canary-v4shk                                        1/1     Running   0          21h
-monitoring        monitoring-grafana-58db4f847b-tn5d2                      3/3     Running   1          164m
-monitoring        monitoring-kube-prometheus-operator-d65f78645-q6p58      1/1     Running   0          17h
-monitoring        monitoring-kube-state-metrics-7656547675-shvkx           1/1     Running   6          6d18h
-monitoring        monitoring-prometheus-node-exporter-2zt7z                1/1     Running   0          17h
-monitoring        monitoring-prometheus-node-exporter-8jqh9                1/1     Running   10         17h
-monitoring        monitoring-prometheus-node-exporter-k8lc8                1/1     Running   0          17h
-prometheus        prometheus-monitoring-kube-prometheus-prometheus-0       2/2     Running   0          168m
-tailscale         operator-5f8bdd949f-nxcc8                                1/1     Running   0          15h
-tailscale         ts-alertmanager-ui-k6scm-0                               1/1     Running   0          6h31m
-tailscale         ts-argocd-server-wfgxp-0                                 1/1     Running   0          15h
-tailscale         ts-longhorn-frontend-2lsm8-0                             1/1     Running   0          15h
-tailscale         ts-monitoring-grafana-7lwxg-0                            1/1     Running   0          15h
-tailscale         ts-open-webui-ts-b6jtj-0                                 1/1     Running   0          6h1m
-tailscale         ts-prometheus-ui-6t5jm-0                                 1/1     Running   0          6h31m
-trivy-system      trivy-operator-64d66c4f5d-9gz9j                          1/1     Running   0          19h
+NAMESPACE         NAME                                                     READY   STATUS        RESTARTS       AGE
+ai-platform       open-webui-0                                             1/1     Running       0              86m
+ai-platform       open-webui-redis-695dcb9d5f-9wj9k                        1/1     Running       1 (88m ago)    2d8h
+argocd            argocd-application-controller-0                          1/1     Running       1 (88m ago)    2d21h
+argocd            argocd-applicationset-controller-8998bf8d-92lq4          1/1     Running       1 (88m ago)    2d21h
+argocd            argocd-dex-server-755d44cc-8hhzt                         1/1     Running       1 (88m ago)    2d21h
+argocd            argocd-notifications-controller-c668fd67c-hrmhn          1/1     Running       1 (88m ago)    2d21h
+argocd            argocd-redis-78d7dccb7f-wkz55                            1/1     Running       1 (88m ago)    2d21h
+argocd            argocd-repo-server-585ccc7645-ppgfk                      1/1     Running       1 (88m ago)    2d21h
+argocd            argocd-server-57455cb49d-8zk72                           1/1     Running       1 (88m ago)    2d21h
+default           nginx-app-d644564f4-2bwbk                                1/1     Running       1 (88m ago)    143m
+default           nginx-app-d644564f4-8mdrn                                1/1     Running       1 (88m ago)    143m
+default           nginx-app-d644564f4-8tt9t                                1/1     Running       1 (88m ago)    5h11m
+default           nginx-app-d644564f4-jvtwg                                1/1     Running       1 (88m ago)    5h13m
+falco             falco-d5q9g                                              2/2     Running       0              2d20h
+falco             falco-falcosidekick-d4764b69b-nqrcq                      1/1     Running       1 (88m ago)    2d20h
+falco             falco-falcosidekick-d4764b69b-rxffh                      1/1     Running       1 (88m ago)    2d6h
+falco             falco-plxvm                                              0/2     Unknown       0              2d20h
+falco             falco-wnsg4                                              2/2     Running       3 (20m ago)    2d20h
+ingress-nginx     ingress-nginx-controller-547bc45676-w5wp4                1/1     Running       13 (88m ago)   3d
+kube-system       calico-kube-controllers-68865dfcb6-48dqc                 1/1     Running       7 (88m ago)    8d
+kube-system       calico-node-b7gks                                        1/1     Running       0              4d19h
+kube-system       calico-node-rvrsm                                        1/1     Running       1 (48m ago)    4d19h
+kube-system       calico-node-xrnbh                                        1/1     Running       1 (88m ago)    4d19h
+kube-system       coredns-7c65d6cfc9-fn7vc                                 1/1     Running       2 (88m ago)    8d
+kube-system       coredns-7c65d6cfc9-mmxcx                                 1/1     Running       2 (88m ago)    8d
+kube-system       etcd-vijay-ubuntu                                        1/1     Running       1 (88m ago)    2d7h
+kube-system       kube-apiserver-vijay-ubuntu                              1/1     Running       6 (88m ago)    8d
+kube-system       kube-controller-manager-vijay-ubuntu                     1/1     Running       35 (86m ago)   2d7h
+kube-system       kube-proxy-2lwkl                                         1/1     Running       1 (48m ago)    8d
+kube-system       kube-proxy-ld2rj                                         1/1     Running       0              8d
+kube-system       kube-proxy-w2vjb                                         1/1     Running       2 (88m ago)    8d
+kube-system       kube-scheduler-vijay-ubuntu                              1/1     Running       39 (13m ago)   2d7h
+kube-system       metrics-server-7584b7988b-z2tvs                          1/1     Running       1 (88m ago)    2d20h
+longhorn-system   csi-attacher-dcf5f4778-7wmnq                             1/1     Running       8 (86m ago)    3d
+longhorn-system   csi-attacher-dcf5f4778-jh7z2                             1/1     Running       6 (88m ago)    2d6h
+longhorn-system   csi-attacher-dcf5f4778-l22q4                             1/1     Running       15 (81m ago)   42h
+longhorn-system   csi-provisioner-85886d6599-flzbl                         1/1     Running       15 (81m ago)   3d
+longhorn-system   csi-provisioner-85886d6599-pcbqs                         1/1     Running       6 (88m ago)    42h
+longhorn-system   csi-provisioner-85886d6599-wkms4                         1/1     Running       8 (86m ago)    2d6h
+longhorn-system   csi-resizer-64fd6c6db9-8m5jp                             1/1     Running       8 (81m ago)    2d6h
+longhorn-system   csi-resizer-64fd6c6db9-hx2m8                             1/1     Running       17 (88m ago)   3d
+longhorn-system   csi-resizer-64fd6c6db9-xhxvq                             1/1     Running       4 (88m ago)    42h
+longhorn-system   csi-snapshotter-69b79bc644-cr8qp                         1/1     Running       13 (88m ago)   2d6h
+longhorn-system   csi-snapshotter-69b79bc644-x9rn4                         1/1     Running       6 (86m ago)    42h
+longhorn-system   csi-snapshotter-69b79bc644-xcf8j                         1/1     Running       7 (81m ago)    3d
+longhorn-system   engine-image-ei-a4d05f02-5rs2f                           1/1     Running       5 (48m ago)    3d
+longhorn-system   engine-image-ei-a4d05f02-m67p4                           1/1     Running       1 (8h ago)     3d
+longhorn-system   engine-image-ei-a4d05f02-xmnz9                           1/1     Running       1 (88m ago)    3d
+longhorn-system   instance-manager-fb684a3edd7d8b12fce28628a8c35b26        1/1     Running       0              87m
+longhorn-system   instance-manager-fd54f58cd08d40ea72b785096cff0498        1/1     Running       0              88m
+longhorn-system   longhorn-csi-plugin-4rch7                                0/3     Unknown       0              3d
+longhorn-system   longhorn-csi-plugin-kxqrp                                3/3     Running       0              3d
+longhorn-system   longhorn-csi-plugin-njzzm                                3/3     Running       3 (88m ago)    3d
+longhorn-system   longhorn-driver-deployer-7b5884966f-jf85v                1/1     Running       3 (88m ago)    3d
+longhorn-system   longhorn-manager-b88pb                                   2/2     Running       3 (88m ago)    3d
+longhorn-system   longhorn-manager-nt886                                   2/2     Running       2 (48m ago)    3d
+longhorn-system   longhorn-manager-rv7gj                                   2/2     Running       1              3d
+longhorn-system   longhorn-ui-56fcbf68c9-685mg                             1/1     Running       1 (88m ago)    42h
+longhorn-system   longhorn-ui-56fcbf68c9-fg42v                             1/1     Running       1 (88m ago)    3d
+mcp               kubernetes-mcp-server-757576df77-npnzs                   1/1     Running       1 (88m ago)    2d6h
+monitoring        alertmanager-monitoring-kube-prometheus-alertmanager-0   2/2     Running       0              85m
+monitoring        alloy-2dk9x                                              2/2     Running       0              2d21h
+monitoring        alloy-2llk7                                              2/2     Running       2 (88m ago)    2d21h
+monitoring        alloy-rwrl8                                              0/2     Unknown       0              2d21h
+monitoring        loki-canary-6s7h2                                        0/1     Unknown       0              2d23h
+monitoring        loki-canary-bb9rq                                        1/1     Running       1 (88m ago)    2d23h
+monitoring        loki-canary-v4shk                                        1/1     Running       0              2d23h
+monitoring        monitoring-grafana-58db4f847b-22xs9                      3/3     Running       0              78m
+monitoring        monitoring-kube-prometheus-operator-d65f78645-q6p58      1/1     Running       1 (88m ago)    2d19h
+monitoring        monitoring-kube-state-metrics-7656547675-shvkx           1/1     Running       24 (74m ago)   8d
+monitoring        monitoring-prometheus-node-exporter-2zt7z                1/1     Running       1 (48m ago)    2d19h
+monitoring        monitoring-prometheus-node-exporter-8jqh9                1/1     Running       31 (88m ago)   2d19h
+monitoring        monitoring-prometheus-node-exporter-k8lc8                1/1     Running       0              2d19h
+monitoring        prometheus-monitoring-kube-prometheus-prometheus-0       2/2     Running       0              86m
+tailscale         operator-5f8bdd949f-nxcc8                                1/1     Running       1 (88m ago)    2d17h
+tailscale         ts-alertmanager-ui-k6scm-0                               1/1     Running       1 (88m ago)    2d8h
+tailscale         ts-argocd-server-wfgxp-0                                 1/1     Running       1 (88m ago)    2d17h
+tailscale         ts-longhorn-frontend-2lsm8-0                             1/1     Running       1 (88m ago)    2d17h
+tailscale         ts-monitoring-grafana-7lwxg-0                            1/1     Running       1 (88m ago)    2d17h
+tailscale         ts-open-webui-ts-b6jtj-0                                 1/1     Running       1 (88m ago)    2d8h
+tailscale         ts-prometheus-ui-6t5jm-0                                 1/1     Running       1 (88m ago)    2d8h
+trivy-system      trivy-operator-64d66c4f5d-9gz9j                          1/1     Running       1 (88m ago)    2d21h
 ```
 
 </details>
@@ -411,4 +413,4 @@ MIT
 
 ---
 
-*Last updated: July 20, 2026*
+*Last updated: July 22, 2026*
